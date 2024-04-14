@@ -413,7 +413,7 @@ void print(Personagem personagem)
 int main(int argc, char const *argv[])
 {
     // ----------------- ler aquivo characters.csv --------------------
-    FILE *arq = fopen("/tmp/characters.csv", "r");
+    FILE *arq = fopen("tmp/characters.csv", "r");
     if (arq == NULL)
     {
         printf("Erro ao abrir o arquivo.");
