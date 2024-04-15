@@ -340,10 +340,12 @@ void read(String line, Personagem *personagem)
     sscanf(personagem->dateOfBirth, "%d-%d-%d", &day, &mouth, &year);
     sprintf(personagem->dateOfBirth, "%02d-%02d-%d", day, mouth, year);
 
-    personagem->hogwartsStaff = (strcmp(info[7], "VERDADEIRO") == 0) ? true : false;
-    personagem->alive = (strcmp(info[10], "VERDADEIRO") == 0) ? true : false;
-    personagem->wizard = (strcmp(info[17], "VERDADEIRO") == 0) ? true : false;
+    // Booleans
+    personagem->hogwartsStaff = (info[7][0] == 'F') ? false : true;
+    personagem->alive = (info[10][0] == 'F') ? false : true;
+    personagem->wizard = (info[17][0] == 'F') ? false : true;
 
+    // Alternate names
     personagem->alternate_names = (Lista *)malloc(sizeof(Lista));
     iniciar(personagem->alternate_names, 15);
 
@@ -363,6 +365,7 @@ void read(String line, Personagem *personagem)
         free(tmpAlt);
     }
 
+    // Alternate actors
     personagem->alternate_actors = (Lista *)malloc(sizeof(Lista));
     iniciar(personagem->alternate_actors, 15);
 
@@ -407,11 +410,14 @@ void print(Personagem personagem)
     printf("} ## %s ## %s ## %s ## %s ## false ## false ## %s ## false ## %s ## %d ## %s ## %s ## %s ## ",
            personagem.house, personagem.ancestry, personagem.species, personagem.patronus,
            personagem.actorName, personagem.dateOfBirth, personagem.yearOfBirth,
-           personagem.eyeColour, personagem.gender, personagem.hairColour, personagem.wizard);
-if(personagem.wizard){
-printf("true");
-}else{
-printf("false");
+           personagem.eyeColour, personagem.gender, personagem.hairColour);
+    
+    
+    if(personagem.wizard){
+        printf("true]\n");
+    }else{
+        printf("false]\n");
+    }
 }
 
 int main(int argc, char const *argv[])
