@@ -1,7 +1,9 @@
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
@@ -531,13 +533,27 @@ class Personagem {
 
     // ------------- Pesquisa Sequencial ---------------------
     boolean sequencialSearch(String[] id, Lista personagens, String name){
+        long startTime = System.nanoTime(); // comecar tempo inicial
+        int count = 0;
         for (int i = 0; id[i] != null; i++) {
             Personagem personagem = personagens.getCharacterByID(id[i]);
-            if (personagem.name.equals(name)) {
+            if (count++ >= 0 && personagem.name.equals(name)) {
+                long endTime = System.nanoTime(); // pegar tempo final
+                long executionTime = endTime - startTime; // calcular o tempo de execucao
+                writeLog("matricula_sequencial.txt", count, executionTime);
                 return true;
             }
         }
         return false;
+    }
+
+    // --------------- Escrever aquivo log ---------------
+    public static void writeLog(String fileName, int numComp, long execTime){
+        try (BufferedWriter BW = new BufferedWriter(new FileWriter(fileName))) {
+            BW.write("815373" + "\t" + numComp + "\t" + execTime);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
     }
 } // end Personagem
 
@@ -597,7 +613,7 @@ public class TP02Q03 {
         String charset = "UTF-8";
 
         // -------------------- Ler o Arquivo .csv ---------------
-        try (BufferedReader buffer = new BufferedReader(new FileReader("/tmp/characters.csv", Charset.forName(charset)))) {
+        try (BufferedReader buffer = new BufferedReader(new FileReader("tmp/characters.csv", Charset.forName(charset)))) {
 
             String characterLine = buffer.readLine();
             while ((characterLine = buffer.readLine()) != null) {
