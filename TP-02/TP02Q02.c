@@ -404,10 +404,14 @@ void print(Personagem personagem)
         }
     }
 
-    printf("} ## %s ## %s ## %s ## %s ## false ## false ## %s ## false ## %s ## %d ## %s ## %s ## %s ## %d]\n",
+    printf("} ## %s ## %s ## %s ## %s ## false ## false ## %s ## false ## %s ## %d ## %s ## %s ## %s ## ",
            personagem.house, personagem.ancestry, personagem.species, personagem.patronus,
            personagem.actorName, personagem.dateOfBirth, personagem.yearOfBirth,
            personagem.eyeColour, personagem.gender, personagem.hairColour, personagem.wizard);
+if(personagem.wizard){
+printf("true");
+}else{
+printf("false");
 }
 
 int main(int argc, char const *argv[])
