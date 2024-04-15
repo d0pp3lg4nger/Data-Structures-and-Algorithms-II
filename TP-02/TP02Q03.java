@@ -550,7 +550,7 @@ class Personagem {
     // --------------- Escrever aquivo log ---------------
     public static void writeLog(String fileName, int numComp, long execTime){
         try (BufferedWriter BW = new BufferedWriter(new FileWriter(fileName))) {
-            BW.write("815373" + "\t" + numComp + "\t" + execTime);
+            BW.write("matricula" + "\t" + numComp + "\t" + execTime);
         } catch (Exception e) {
             e.getStackTrace();
         }
