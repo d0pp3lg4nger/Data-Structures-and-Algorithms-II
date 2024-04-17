@@ -676,7 +676,7 @@ public class TP02Q03 {
         String charset = "UTF-8";
 
         // -------------------- Ler o Arquivo .csv ---------------
-        try (BufferedReader buffer = new BufferedReader(new FileReader("/tmp/characters.csv", Charset.forName(charset)))) {
+        try (BufferedReader buffer = new BufferedReader(new FileReader("tmp/characters.csv", Charset.forName(charset)))) {
 
             String characterLine = buffer.readLine();
             while ((characterLine = buffer.readLine()) != null) {
