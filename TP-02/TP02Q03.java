@@ -10,8 +10,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-/**
- * ListaAlternate
+/*
+ * 
+    ██╗     ██╗███████╗████████╗ █████╗      █████╗ ██╗     ████████╗
+    ██║     ██║██╔════╝╚══██╔══╝██╔══██╗    ██╔══██╗██║     ╚══██╔══╝
+    ██║     ██║███████╗   ██║   ███████║    ███████║██║        ██║   
+    ██║     ██║╚════██║   ██║   ██╔══██║    ██╔══██║██║        ██║   
+    ███████╗██║███████║   ██║   ██║  ██║    ██║  ██║███████╗   ██║   
+    ╚══════╝╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝    ╚═╝  ╚═╝╚══════╝   ╚═╝   
  */
 class ListaAlternate {
     private String[] array;
@@ -52,8 +58,14 @@ class ListaAlternate {
     }
 } // end ListaAlternate
 
-/**
- * Celula (pilha, lista e fila dinamica)
+/*
+ * 
+     ██████╗███████╗██╗     ██╗   ██╗██╗      █████╗ 
+    ██╔════╝██╔════╝██║     ██║   ██║██║     ██╔══██╗
+    ██║     █████╗  ██║     ██║   ██║██║     ███████║
+    ██║     ██╔══╝  ██║     ██║   ██║██║     ██╔══██║
+    ╚██████╗███████╗███████╗╚██████╔╝███████╗██║  ██║
+     ╚═════╝╚══════╝╚══════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝
  */
 class Celula {
     public Personagem personagem; // Elemento inserido na celula.
@@ -77,8 +89,14 @@ class Celula {
     }
 }
 
-/**
- * Lista dinamica
+/*
+ * 
+    ██╗     ██╗███████╗████████╗ █████╗ 
+    ██║     ██║██╔════╝╚══██╔══╝██╔══██╗
+    ██║     ██║███████╗   ██║   ███████║
+    ██║     ██║╚════██║   ██║   ██╔══██║
+    ███████╗██║███████║   ██║   ██║  ██║
+    ╚══════╝╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝
  */
 class Lista {
     private Celula primeiro;
@@ -205,7 +223,13 @@ class Lista {
 }
 
 /*
- * Personagem
+ * 
+    ██████╗ ███████╗██████╗ ███████╗ ██████╗ ███╗   ██╗ █████╗  ██████╗ ███████╗███╗   ███╗
+    ██╔══██╗██╔════╝██╔══██╗██╔════╝██╔═══██╗████╗  ██║██╔══██╗██╔════╝ ██╔════╝████╗ ████║
+    ██████╔╝█████╗  ██████╔╝███████╗██║   ██║██╔██╗ ██║███████║██║  ███╗█████╗  ██╔████╔██║
+    ██╔═══╝ ██╔══╝  ██╔══██╗╚════██║██║   ██║██║╚██╗██║██╔══██║██║   ██║██╔══╝  ██║╚██╔╝██║
+    ██║     ███████╗██║  ██║███████║╚██████╔╝██║ ╚████║██║  ██║╚██████╔╝███████╗██║ ╚═╝ ██║
+    ╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝
  */
 class Personagem {
     private String id;
@@ -267,6 +291,18 @@ class Personagem {
         }
         return personagemClone;
     }
+
+
+        /*
+     * 
+███████╗███████╗████████╗████████╗███████╗██████╗ ███████╗       ██╗        ██████╗ ███████╗████████╗████████╗███████╗██████╗ ███████╗
+██╔════╝██╔════╝╚══██╔══╝╚══██╔══╝██╔════╝██╔══██╗██╔════╝       ██║       ██╔════╝ ██╔════╝╚══██╔══╝╚══██╔══╝██╔════╝██╔══██╗██╔════╝
+███████╗█████╗     ██║      ██║   █████╗  ██████╔╝███████╗    ████████╗    ██║  ███╗█████╗     ██║      ██║   █████╗  ██████╔╝███████╗
+╚════██║██╔══╝     ██║      ██║   ██╔══╝  ██╔══██╗╚════██║    ██╔═██╔═╝    ██║   ██║██╔══╝     ██║      ██║   ██╔══╝  ██╔══██╗╚════██║
+███████║███████╗   ██║      ██║   ███████╗██║  ██║███████║    ██████║      ╚██████╔╝███████╗   ██║      ██║   ███████╗██║  ██║███████║
+╚══════╝╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝    ╚═════╝       ╚═════╝ ╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝
+                                                                                                                                      
+     */
 
     // ---------------------- SETTERS ----------------------
     public void setId(String id) {
@@ -414,6 +450,16 @@ class Personagem {
         return wizard;
     }
 
+    /*
+     * 
+        ███╗   ███╗███████╗████████╗██╗  ██╗ ██████╗ ██████╗ ███████╗
+        ████╗ ████║██╔════╝╚══██╔══╝██║  ██║██╔═══██╗██╔══██╗██╔════╝
+        ██╔████╔██║█████╗     ██║   ███████║██║   ██║██║  ██║███████╗
+        ██║╚██╔╝██║██╔══╝     ██║   ██╔══██║██║   ██║██║  ██║╚════██║
+        ██║ ╚═╝ ██║███████╗   ██║   ██║  ██║╚██████╔╝██████╔╝███████║
+        ╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝                                                       
+     */
+
     // ------------------------ Ler do Arquivo ---------------------------------
     public void read(String line) throws Exception {
         String[] info = TP02Q03.cutter(';', line);
@@ -531,6 +577,16 @@ class Personagem {
         System.out.println("]");
     }
 
+    /*
+     * 
+    ██████╗ ███████╗███████╗ ██████╗     ███████╗███████╗ ██████╗ 
+    ██╔══██╗██╔════╝██╔════╝██╔═══██╗    ██╔════╝██╔════╝██╔═══██╗
+    ██████╔╝█████╗  ███████╗██║   ██║    ███████╗█████╗  ██║   ██║
+    ██╔═══╝ ██╔══╝  ╚════██║██║▄▄ ██║    ╚════██║██╔══╝  ██║▄▄ ██║
+    ██║     ███████╗███████║╚██████╔╝    ███████║███████╗╚██████╔╝
+    ╚═╝     ╚══════╝╚══════╝ ╚══▀▀═╝     ╚══════╝╚══════╝ ╚══▀▀═╝ 
+     */
+
     // ------------- Pesquisa Sequencial ---------------------
     boolean sequencialSearch(String[] id, Lista personagens, String name){
         long startTime = System.nanoTime(); // comecar tempo inicial
@@ -540,7 +596,8 @@ class Personagem {
             if (count++ >= 0 && personagem.name.equals(name)) {
                 long endTime = System.nanoTime(); // pegar tempo final
                 long executionTime = endTime - startTime; // calcular o tempo de execucao
-                writeLog("matricula_sequencial.txt", count, executionTime);
+                double msExecTime  =executionTime/1000000.0;
+                writeLog("matricula_sequencial.txt", count, msExecTime);
                 return true;
             }
         }
@@ -548,17 +605,23 @@ class Personagem {
     }
 
     // --------------- Escrever aquivo log ---------------
-    public static void writeLog(String fileName, int numComp, long execTime){
+    public static void writeLog(String fileName, int numComp, double execTime){
         try (BufferedWriter BW = new BufferedWriter(new FileWriter(fileName))) {
-            BW.write("matricula" + "\t" + numComp + "\t" + execTime);
+            BW.write("815373" + "\t" + numComp + "\t" + execTime + "ms");
         } catch (Exception e) {
             e.getStackTrace();
         }
     }
 } // end Personagem
 
-/**
- * TP02Q033
+/*
+ * 
+        ███╗   ███╗ █████╗ ██╗███╗   ██╗
+        ████╗ ████║██╔══██╗██║████╗  ██║
+        ██╔████╔██║███████║██║██╔██╗ ██║
+        ██║╚██╔╝██║██╔══██║██║██║╚██╗██║
+        ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║
+        ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
  */
 public class TP02Q03 {
 
@@ -613,7 +676,7 @@ public class TP02Q03 {
         String charset = "UTF-8";
 
         // -------------------- Ler o Arquivo .csv ---------------
-        try (BufferedReader buffer = new BufferedReader(new FileReader("tmp/characters.csv", Charset.forName(charset)))) {
+        try (BufferedReader buffer = new BufferedReader(new FileReader("/tmp/characters.csv", Charset.forName(charset)))) {
 
             String characterLine = buffer.readLine();
             while ((characterLine = buffer.readLine()) != null) {
