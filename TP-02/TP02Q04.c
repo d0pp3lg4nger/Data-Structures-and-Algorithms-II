@@ -209,7 +209,7 @@ Personagem getElementByID(String id)
 void freeCell()
 {
     Cell *aux = primeiro;
-    Cell *prox = aux;
+    Cell *prox;
 
     while (aux != NULL)
     {
@@ -490,7 +490,7 @@ bool isBigger(String str1, String str2)
 // -------------- Swap -------------------
 void swap(String *idArray, int i, int j)
 {
-    char tmp[40];
+    char tmp[300];
     strcpy(tmp, idArray[i]);
     strcpy(idArray[i], idArray[j]);
     strcpy(idArray[j], tmp);
@@ -599,19 +599,19 @@ int main(int argc, char const *argv[])
     fclose(arq);
 
     // ----------------- Ler Entradas ate FIM ---------------
-    char input[100];
+    char input[300];
     scanf("%99s", input);
 
-    String *idArray = (String *)malloc(30 * sizeof(String));
-    for (size_t i = 0; i < 30; i++)
+    String *idArray = (String *)malloc(28 * sizeof(String));
+    for (size_t i = 0; i < 28; i++)
     {
-        idArray[i] = (char *)malloc(100 * sizeof(char));
+        idArray[i] = (char *)malloc(300 * sizeof(char));
     }
 
     int x = 0;
-    while (strcmp(input, "FIM") != 0)
+    while (strcmp(input, "FIM") != 0 && x < 28)
     {
-        if (strcmp(input, "FIM") != 0)
+        if (strcmp(input, "FIM") != 0 && x < 28)
         {
             strcpy(idArray[x], input);
             x++;
@@ -626,13 +626,11 @@ int main(int argc, char const *argv[])
 
     // --------------------------- Ler os Nomes ----------------------------
     char name[300];
-    fgets(name, sizeof(name), stdin);
-    fgets(name, sizeof(name), stdin);
-    int condition = strcmp(name, "FIM");
+    scanf(" %[^\r\n]%*c", name);
 
-    while (strcmp(name, "FIM\n"))
+    while (strcmp(name, "FIM") != 0)
     {
-        if (strcmp(name, "FIM\n"))
+        if (strcmp(name, "FIM") != 0)
         {
             Boolean found = binarySearch(idArray, name, 0, x - 1);
             if (found)
@@ -644,8 +642,7 @@ int main(int argc, char const *argv[])
                 printf("NAO\n");
             }
         }
-
-        fgets(name, sizeof(name), stdin);
+        scanf(" %[^\r\n]%*c", name);
     }
     clock_t endTime = clock();
     double execTime = (double)(endTime - startTime) / CLOCKS_PER_SEC;
@@ -656,7 +653,7 @@ int main(int argc, char const *argv[])
     fprintf(arq, "815373\t %d \t%fms", count, execTime);
 
     // -------------------- Desalocar memoria ---------------------
-    for (size_t i = 0; i < 27; i++)
+    for (size_t i = 0; i < 28; i++)
     {
         free(idArray[i]);
     }
