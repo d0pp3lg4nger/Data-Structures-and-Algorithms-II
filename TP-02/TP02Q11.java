@@ -828,7 +828,7 @@ public class TP02Q11 {
         Lista personagens = new Lista();
 
         // -------------------- Ler o Arquivo .csv ---------------
-        try (BufferedReader buffer = new BufferedReader(new FileReader("/tmp/characters.csv"))) {
+        try (BufferedReader buffer = new BufferedReader(new FileReader("tmp/characters.csv"))) {
 
             String characterLine = buffer.readLine();
             while ((characterLine = buffer.readLine()) != null) {
