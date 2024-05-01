@@ -596,8 +596,8 @@ void countSort(char *arr[], int n, size_t exp) {
 // --------------------- radixsort --------------------------
 void radixSort(char *arr[], int n) {
     size_t maximiliam = getMaximiliam(arr, n);
-    for (size_t digit = maximiliam; digit > 0; digit--) {
-        countSort(arr, n, digit - 1);
+    for (size_t exp = maximiliam; exp > 0; exp--) {
+        countSort(arr, n, exp - 1);
     }
 }
 
@@ -664,6 +664,7 @@ int main(int argc, char const *argv[])
 
     // --------------- Exibir saida ----------------------
     Personagem personagemOut;
+
     for (int i = 0; i < x; i++)
     {
         personagemOut = getElementByID(idArray[i]);
