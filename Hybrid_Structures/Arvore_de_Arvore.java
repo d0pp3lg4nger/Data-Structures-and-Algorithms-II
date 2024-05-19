@@ -171,6 +171,39 @@ public class Arvore_de_Arvore {
         return count;
     }
 
+    public int contar_palavras_padrao(String padrao) throws Exception{
+        int count = 0;
+        count = contar_palavras_padrao(padrao, raiz);
+        return count;
+    }
+
+    private int contar_palavras_padrao(String padrao, No no) throws Exception{
+        int count = 0;
+        if (no == null) {
+            throw new Exception("Erro ao contar palavras!");
+        }else if (padrao.charAt(0) == no.letra) {
+            count = contar_palavras_padrao_AUX(padrao, no.outro);
+        }else if (padrao.charAt(0) > no.letra) {
+            count = contar_palavras_padrao(padrao, no.dir);
+        }else{
+            count = contar_palavras_padrao(padrao, no.esq);
+        }
+        return count;
+    }
+
+    private int contar_palavras_padrao_AUX(String padrao, subNo i){
+        int count = 0;
+        if (i == null) {
+            return 0;
+        }
+        if (padrao.length() == i.palavra.length()) {
+            count++;
+        }
+        count += contar_palavras_padrao_AUX(padrao, i.esq);
+        count += contar_palavras_padrao_AUX(padrao, i.dir);
+        return count;
+    }
+
     public static void main(String[] args)throws Exception {
         Arvore_de_Arvore arvore = new Arvore_de_Arvore();
 
@@ -181,7 +214,8 @@ public class Arvore_de_Arvore {
         System.out.println("1 - Inserir");
         System.out.println("2 - Pesquisar");
         System.out.println("3 - Contar Palavras");
-        System.out.println("4 - Mostrar");
+        System.out.println("4 - Contar Palavras com Padrao");
+        System.out.println("5 - Mostrar");
         x = scanner.nextInt();
 
         String palavra;
@@ -210,6 +244,12 @@ public class Arvore_de_Arvore {
                     System.out.println("Numero de palavras: " + count);
                     break;
                 case 4:
+                    System.out.println("Insira uma string: ");
+                    String str = scanner.next();
+                    int count_padrao = arvore.contar_palavras_padrao(str);
+                    System.out.println("Numero de palavras: " + count_padrao);
+                    break;
+                case 5:
                     arvore.mostrar();
                     break;
                 default:
@@ -219,7 +259,8 @@ public class Arvore_de_Arvore {
             System.out.println("1 - Inserir");
             System.out.println("2 - Pesquisar");
             System.out.println("3 - Contar Palavras");
-            System.out.println("4 - Mostrar");
+            System.out.println("4 - Contar Palavras com Padrao");
+            System.out.println("5 - Mostrar");
             x = scanner.nextInt();
             scanner.nextLine();  // Consumir a nova linha
         }
