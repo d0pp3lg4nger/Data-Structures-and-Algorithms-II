@@ -672,9 +672,9 @@ int main(int argc, char const *argv[])
 
     FILE* arq2 = fopen("matricula_hashIndireta.txt", "wt");
     fprintf(arq2, "815373\t %d \t%fms", countComp, execTime);
-    fclose(arq2);
 
     free(lista);
     freeHashTable(personagens);
+    fclose(arq2);
     return 0;
 }
