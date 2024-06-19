@@ -9,55 +9,172 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-class Node<T>{
-    public T element;
-    public Node<T> right;
-    public Node<T> left;
+class Node{
+    public Personagem element;
+    public Node right;
+    public Node left;
+    public boolean color;
 
-    public Node(T element){
+    public Node(Personagem element){
         this.element = element;
         this.right = this.left = null;
+        this.color = false;
+    }
+
+    public Node(Personagem element, boolean color){
+        this.element = element;
+        this.right = this.left = null;
+        this.color = color;
     }
 }
 
-class BinaryTree<T extends Comparable<T>>{
-    Node<T> root;
+class BlueWhite{
+    Node root;
     public int countComp;
 
-    public BinaryTree(){
+    public BlueWhite(){
         root = null;
         countComp = 0;
     }
 
-    public void insert(T element){
-        root = insert(element, this.root);
-    }
-
-    private Node<T> insert(T element, Node<T> node){
-        if (node == null) {
-            node = new Node<T>(element);
-        }else if (countComp++ >= 0 && element.compareTo(node.element) < 0) {
-            node.left = insert(element, node.left);
-        }else if (countComp++ >= 0 && element.compareTo(node.element) > 0) {
-            node.right = insert(element, node.right);
+    public void insert(Personagem element) throws Exception{
+        if (countComp++ >= 0 && root == null) {
+            root = new Node(element);
+        }else if ((countComp+=2) >= 0 && root.right == null && root.left == null) {
+            if (countComp++ >= 0 && element.getName().compareTo(root.element.getName()) > 0) {
+                root.right = new Node(element);
+            }else{
+                root.left = new Node(element);
+            }
+        }else if (root.right == null) {
+            if (countComp++ >= 0 && element.getName().compareTo(root.element.getName()) > 0) {
+                root.right = new Node(element);
+            }else if (countComp++ >= 0 && element.getName().compareTo(root.left.element.getName()) > 0) {
+                root.right = new Node(root.element);
+                root.element = element;
+            }else{
+                root.right = new Node(root.element);
+                root.element = root.left.element;
+                root.left.element = element;
+            }
+        }else if (root.left == null) {
+            if (countComp++ >= 0 && element.getName().compareTo(root.element.getName()) < 0) {
+                root.left = new Node(element);
+            }else if (countComp++ >= 0 && element.getName().compareTo(root.right.element.getName()) < 0) {
+                root.left = new Node(root.element);
+                root.element = element;
+            }else{
+                root.left = new Node(root.element);
+                root.element = root.right.element;
+                root.right.element = element;
+            }
+        }else{
+            insert(element, null, null, null, root);
         }
-        return node;
+        root.color = false;
     }
 
-    public boolean search(T element){
+    private void insert(Personagem element, Node bisavo, Node avo, Node pai, Node i) throws Exception{
+        if (countComp++ >= 0 && i == null) {
+            if (countComp++ >= 0 && element.getName().compareTo(pai.element.getName()) > 0) {
+                i = pai.right = new Node(element, true);
+            }else{
+                i = pai.left = new Node(element, true);
+            }
+            if (countComp++ >= 0 && pai.color == true) {
+                balance(bisavo, avo, pai, i);
+            }
+        }else{
+            if ((countComp+=4) >= 0 && i.right != null && i.left != null && i.right.color == true && i.left.color == true) {
+                i.color = true;
+                i.right.color = i.left.color = false;
+                if (i == root) {
+                    i.color = false;
+                }else if (pai.color == true) {
+                    balance(bisavo, avo, pai, i);
+                }
+            }
+            if (countComp++ >= 0 && element.getName().compareTo(i.element.getName()) > 0) {
+                insert(element, avo, pai, i, i.right);
+            }else if (countComp++ >= 0 && element.getName().compareTo(i.element.getName()) < 0) {
+                insert(element, avo, pai, i, i.left);
+            }else{
+                throw new Exception("Erro ao inserir!");
+            }
+        }
+    }
+
+    private void balance(Node bisavo, Node avo, Node pai, Node i){
+        if (pai.color == true) {
+            if (countComp++ >= 0 && pai.element.getName().compareTo(avo.element.getName()) > 0) {
+                if (countComp++ >= 0 && i.element.getName().compareTo(pai.element.getName()) > 0) {
+                    avo = rotateLeft(avo);
+                }else{
+                    avo = roatateRightLeft(avo);
+                }
+            }else{
+                if (countComp++ >= 0 && i.element.getName().compareTo(pai.element.getName()) < 0) {
+                    avo = rotateRight(avo);
+                }else{
+                    avo = rotateLeftRight(avo);
+                }
+            }
+
+            if (bisavo == null) {
+                root = avo;
+            }else if (countComp++ >= 0 && avo.element.getName().compareTo(bisavo.element.getName()) > 0) {
+                bisavo.right = avo;
+            }else{
+                bisavo.left = avo;
+            }
+
+            avo.color = false;
+            avo.right.color = avo.left.color = true;
+        }
+    }
+
+    private Node rotateLeft(Node node){
+        Node nodeRight = node.right;
+        Node nodeRightLeft = nodeRight.left;
+
+        nodeRight.left = node;
+        node.right = nodeRightLeft;
+        return nodeRight;
+    }
+
+    private Node rotateRight(Node node){
+        Node nodeLeft = node.left;
+        Node nodeLeftRight = nodeLeft.right;
+
+        nodeLeft.right = node;
+        node.left = nodeLeftRight;
+        return nodeLeft;
+    }
+
+    private Node roatateRightLeft(Node node){
+        node.right = rotateRight(node.right);
+        return rotateLeft(node);
+    }
+
+    private Node rotateLeftRight(Node node){
+        node.left = rotateLeft(node.left);
+        return rotateRight(node);
+    }
+
+    public boolean search(String element){
         boolean resp;
         resp = search(element, this.root);
         return resp;
     }
 
-    private boolean search(T element, Node<T> node){
+    private boolean search(String element, Node node){
         boolean resp = false;
         if (countComp++ >= 0 && node == null) {
             resp = false;
         }
-        else if (countComp++ >= 0 && node.element.compareTo(element) == 0) {
+        else if (countComp++ >= 0 && node.element.getName().compareTo(element) == 0) {
             resp = true;
-        }else if (countComp++ >= 0 && element.compareTo(node.element) > 0) {
+        }else if (countComp++ >= 0 && element.compareTo(node.element.getName()) > 0) {
             System.out.print("dir ");
             resp = search(element, node.right);
         }else{
@@ -65,28 +182,6 @@ class BinaryTree<T extends Comparable<T>>{
             resp = search(element, node.left);
         }
         return resp;
-    }
-
-    public Personagem getCharacterById(String id){
-        Personagem p;
-        p = getCharacterById(id, this.root);
-        return p;
-    }
-
-    private Personagem getCharacterById(String id, Node<T> node){
-        Personagem p = null;
-        if (node != null) {
-            Personagem personagem = (Personagem) node.element;
-            if (personagem.getId().equals(id)) {
-                p = personagem;
-            }else{
-                p = getCharacterById(id, node.left);
-                if (p == null) {
-                    p = getCharacterById(id, node.right);
-                }
-            }
-        }
-        return p;
     }
 }
 
@@ -556,45 +651,45 @@ class Personagem implements Comparable<Personagem> {
     }
 
     // ------------------ imprimir dados -----------------------
-    public void print(BinaryTree<Personagem> personagens, String id, int index) {
-        Personagem personagem;
-        personagem = personagens.getCharacterById(id);
+    // public void print(BinaryTree<Personagem> personagens, String id, int index) {
+    //     Personagem personagem;
+    //     personagem = personagens.getCharacterById(id);
 
-        // ------------------- Alternate Names --------------------
-        System.out.print("[" + index + " ## " + personagem.getId() + " ## " + personagem.getName() + " ## " + "{");
-        if (personagem.getAlternate_names().length() > 0) {
-            for (int i = 0; i < personagem.getAlternate_names().length() - 1; i++) {
-                System.out.print(personagem.getAlternate_names().getElement(i) + ", ");
-            }
-            System.out.print(personagem.getAlternate_names().getElement(personagem.getAlternate_names().length() - 1));
-        }
-        System.out.print("}");
+    //     // ------------------- Alternate Names --------------------
+    //     System.out.print("[" + index + " ## " + personagem.getId() + " ## " + personagem.getName() + " ## " + "{");
+    //     if (personagem.getAlternate_names().length() > 0) {
+    //         for (int i = 0; i < personagem.getAlternate_names().length() - 1; i++) {
+    //             System.out.print(personagem.getAlternate_names().getElement(i) + ", ");
+    //         }
+    //         System.out.print(personagem.getAlternate_names().getElement(personagem.getAlternate_names().length() - 1));
+    //     }
+    //     System.out.print("}");
 
-        System.out.print(" ## " + personagem.getHouse() + " ## " + personagem.getAncestry() + " ## "
-                + personagem.getSpecies() + " ## "
-                + personagem.getPatronus() + " ## " + personagem.getHogwartsStaff() + " ## "
-                + personagem.getHogwartsStudent() + " ## "
-                + personagem.getActorName());
+    //     System.out.print(" ## " + personagem.getHouse() + " ## " + personagem.getAncestry() + " ## "
+    //             + personagem.getSpecies() + " ## "
+    //             + personagem.getPatronus() + " ## " + personagem.getHogwartsStaff() + " ## "
+    //             + personagem.getHogwartsStudent() + " ## "
+    //             + personagem.getActorName());
 
-        // ---------- Formatar a data -----------
-        String date = "";
-        if (personagem.getDateOfBirth() != null) {
-            date = personagem.getDateOfBirth().toString();
-            String[] dateCut = TP04Q04.cutter('-', date);
-            date = dateCut[2];
-            date += "-";
-            date += dateCut[1];
-            date += "-";
-            date += dateCut[0];
-        }
+    //     // ---------- Formatar a data -----------
+    //     String date = "";
+    //     if (personagem.getDateOfBirth() != null) {
+    //         date = personagem.getDateOfBirth().toString();
+    //         String[] dateCut = TP04Q04.cutter('-', date);
+    //         date = dateCut[2];
+    //         date += "-";
+    //         date += dateCut[1];
+    //         date += "-";
+    //         date += dateCut[0];
+    //     }
 
-        System.out.print(" ## " + personagem.getAlive() + " ## "
-                + date
-                + " ## " + personagem.getYearOfBirth() + " ## " + personagem.getEyeColour() + " ## "
-                + personagem.getGender() + " ## "
-                + personagem.getHairColour() + " ## " + personagem.getWizard());
-        System.out.println("]");
-    }
+    //     System.out.print(" ## " + personagem.getAlive() + " ## "
+    //             + date
+    //             + " ## " + personagem.getYearOfBirth() + " ## " + personagem.getEyeColour() + " ## "
+    //             + personagem.getGender() + " ## "
+    //             + personagem.getHairColour() + " ## " + personagem.getWizard());
+    //     System.out.println("]");
+    // }
 } // end Personagem
 
 /**
@@ -717,11 +812,11 @@ public class TP04Q04{
         // ------------ Ler Entradas ---------------
         Scanner scanner = new Scanner(System.in);
         String line = "";
-        BinaryTree<String> names = new BinaryTree<String>();
+        BlueWhite characters = new BlueWhite();
         while (!line.equalsIgnoreCase("FIM") && scanner.hasNext()) {
             line = scanner.nextLine();
             if(!line.equalsIgnoreCase("FIM")){
-                names.insert(personagens.getCharacterByID(line).getName());
+                characters.insert(personagens.getCharacterByID(line));
             }
         }
 
@@ -731,7 +826,7 @@ public class TP04Q04{
             line = scanner.nextLine();
             if (!line.equalsIgnoreCase("FIM")) {
                 System.out.print(line + " => raiz ");
-                boolean resp = names.search(line);
+                boolean resp = characters.search(line);
                 if (resp) {
                     System.out.println("SIM");
                 }else{
@@ -742,8 +837,8 @@ public class TP04Q04{
 
         long endTime = System.currentTimeMillis();
         long execTime = endTime - startTime;
-        try (BufferedWriter BW = new BufferedWriter(new FileWriter("matricula_quicksort2_java.txt"))) {
-            BW.write("815373" + "\t" + names.countComp + "\t" + execTime + "ms");
+        try (BufferedWriter BW = new BufferedWriter(new FileWriter("matricula_avinegra.txt"))) {
+            BW.write("815373" + "\t" + characters.countComp + "\t" + execTime + "ms");
         } catch (Exception e) {
             e.getStackTrace();
         }
