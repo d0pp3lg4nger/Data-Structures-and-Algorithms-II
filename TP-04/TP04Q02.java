@@ -9,105 +9,122 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-class subNode{
+class subNode {
     public String name;
     public subNode right;
     public subNode left;
 
-    public subNode(String element){
+    public subNode(String element) {
         this.name = element;
         this.right = this.left = null;
     }
 
 }
 
-class Node{
+class Node {
     public int yearOfBirth;
-    public Node right;
-    public Node left;
-    public subNode subNode;
+    public Node RIGHT;
+    public Node LEFT;
+    public subNode outro;
 
-    public Node(int element){
+    public Node(int element) {
         this.yearOfBirth = element;
-        this.right = this.left = null;
-        this.subNode = null;
+        this.RIGHT = this.LEFT = null;
+        this.outro = null;
     }
 }
 
-class BinaryTree{
+class BinaryTree {
     Node root;
     public int countComp;
 
-    public BinaryTree(){
+    public BinaryTree() {
         root = null;
         countComp = 0;
     }
 
-    public void insert(Personagem personagem){
+    public void base_insert(int x){
+        root = base_insert(x, root);
+    }
+
+    private Node base_insert(int x, Node no){
+        if (no == null) {
+            no = new Node(x);
+        }else if (x > no.yearOfBirth) {
+            no.RIGHT = base_insert(x, no.RIGHT);
+        }else{
+            no.LEFT = base_insert(x, no.LEFT);
+        }
+        return no;
+    }
+
+    public void insert(Personagem personagem) {
         root = insert(personagem, this.root);
     }
 
-    private Node insert(Personagem element, Node node){
+    private Node insert(Personagem element, Node node) {
         if (node == null) {
-            node = new Node(element.getYearOfBirth()%15);
-        }else if ((element.getYearOfBirth()%15) == node.yearOfBirth){
-            node.subNode = insertSubNode(element, node.subNode);
-        }
-        else if (countComp++ >= 0 && (element.getYearOfBirth()%15) < node.yearOfBirth) {
-            node.left = insert(element, node.left);
-        }else if (countComp++ >= 0 && (element.getYearOfBirth()%15) > node.yearOfBirth) {
-            node.right = insert(element, node.right);
+            node = new Node(element.getYearOfBirth() % 15);
+        } else if ((element.getYearOfBirth() % 15) == node.yearOfBirth) {
+            node.outro = insertSubNode(element, node.outro);
+        } else if (countComp++ >= 0 && (element.getYearOfBirth() % 15) < node.yearOfBirth) {
+            node.LEFT = insert(element, node.LEFT);
+        } else if (countComp++ >= 0 && (element.getYearOfBirth() % 15) > node.yearOfBirth) {
+            node.RIGHT = insert(element, node.RIGHT);
         }
         return node;
     }
 
-    private subNode insertSubNode(Personagem element, subNode subNode){
+    private subNode insertSubNode(Personagem element, subNode subNode) {
         if (subNode == null) {
             subNode = new subNode(element.getName());
-        }else if (element.getName().compareTo(subNode.name) > 0) {
+        } else if (element.getName().compareTo(subNode.name) > 0) {
             subNode.right = insertSubNode(element, subNode.right);
-        }else{
+        } else {
             subNode.left = insertSubNode(element, subNode.left);
         }
         return subNode;
     }
 
-    public boolean search(Personagem element){
+    public boolean search(Personagem element) {
         boolean resp;
         resp = search(element, this.root);
         return resp;
     }
 
-    private boolean search(Personagem element, Node node){
+    private boolean search(Personagem element, Node node) {
         boolean resp = false;
-        if (countComp++ >= 0 && node == null) {
-            resp = false;
-        }
-        else if (countComp++ >= 0 && (element.getYearOfBirth()%15) == node.yearOfBirth) {
-            resp = searchSubNode(element, node.subNode);
-        }else if (countComp++ >= 0 && (element.getYearOfBirth()%15) > node.yearOfBirth ) {
-            System.out.print(" DIR");
-            resp = search(element, node.right);
-        }else{
-            System.out.print(" ESQ");
-            resp = search(element, node.left);
+        if (node != null) {
+            resp = searchSubNode(element, node.outro);
+            if (!resp) {
+                System.out.print(" ESQ");
+                resp = search(element, node.LEFT);
+            }
+            if (!resp) {
+                System.out.print(" DIR");
+                resp = search(element, node.RIGHT);
+            }
         }
         return resp;
     }
 
-    private boolean searchSubNode(Personagem element, subNode subNode){
+    private boolean searchSubNode(Personagem element, subNode subNode) {
         boolean resp = false;
         if (subNode == null) {
             resp = false;
-        }else if (element.getName().compareTo(subNode.name) == 0) {
+        }
+        else if (element.getName().equals(subNode.name)) {
             resp = true;
-        }else if (element.getName().compareTo(subNode.name) > 0) {
+        }
+        else if (element.getName().compareTo(subNode.name) > 0) {
             System.out.print("->dir");
             resp = searchSubNode(element, subNode.right);
-        }else{
+        }
+        else if (element.getName().compareTo(subNode.name) < 0) {
             System.out.print("->esq");
             resp = searchSubNode(element, subNode.left);
         }
+
         return resp;
     }
 }
@@ -126,22 +143,23 @@ class Lista {
         this.tamanho = 0;
     }
 
-    public Lista(int tamanho){
+    public Lista(int tamanho) {
         personagens = new Personagem[tamanho];
         this.tamanho = 0;
     }
+
     /**
      * Insere um elemento na primeira posicao da lista.
      * 
      * @param x Personagem elemento a ser inserido.
      */
-    public void inserirInicio(Personagem personagem) throws Exception{
+    public void inserirInicio(Personagem personagem) throws Exception {
         if (tamanho >= personagens.length) {
             throw new Exception("Erro ao inserir no inicio!");
         }
 
         for (int i = tamanho; i > 0; i--) {
-            personagens[i] = personagens[i-1];
+            personagens[i] = personagens[i - 1];
         }
         personagens[0] = personagem;
         tamanho++;
@@ -152,7 +170,7 @@ class Lista {
      * 
      * @param personagem Personagem elemento a ser inserido.
      */
-    public void inserirFim(Personagem personagem) throws Exception{
+    public void inserirFim(Personagem personagem) throws Exception {
         if (tamanho >= personagens.length) {
             throw new Exception("Erro ao inserir no fim!");
         }
@@ -177,8 +195,8 @@ class Lista {
             inserirFim(personagem);
         } else {
             // Caminhar ate a posicao anterior a insercao
-            for (int j = tamanho; j > pos; j--){
-                personagens[j] = personagens[j-1];
+            for (int j = tamanho; j > pos; j--) {
+                personagens[j] = personagens[j - 1];
             }
             personagens[pos] = personagem;
             tamanho++;
@@ -197,7 +215,7 @@ class Lista {
         tamanho--;
 
         for (int i = 0; i < tamanho; i++) {
-            personagens[i] = personagens[i+1];
+            personagens[i] = personagens[i + 1];
         }
         return resp;
     }
@@ -219,9 +237,9 @@ class Lista {
     public Personagem remover(int pos) throws Exception {
         if (pos < 0 || pos > tamanho || tamanho == 0) {
             throw new Exception("Erro ao remover posicao (" + pos + " / tamanho = " + tamanho + ") invalida!");
-        }else if (pos == 0) {
+        } else if (pos == 0) {
             removerInicio();
-        }else if (pos == tamanho) {
+        } else if (pos == tamanho) {
             removerFim();
         }
 
@@ -229,7 +247,7 @@ class Lista {
         tamanho--;
 
         for (int i = pos; i < tamanho; i++) {
-            personagens[i] = personagens[i+1];
+            personagens[i] = personagens[i + 1];
         }
         return resp;
     }
@@ -265,6 +283,7 @@ class Lista {
 
     /**
      * Pegar o objeto referente ao id
+     * 
      * @param id - identificador do objeto
      * @return Objeto procurado
      */
@@ -277,7 +296,7 @@ class Lista {
         return new Personagem();
     }
 
-    public Personagem getCharacterByName(String name){
+    public Personagem getCharacterByName(String name) {
         for (int i = 0; i < tamanho; i++) {
             if (personagens[i].getName().equals(name)) {
                 return personagens[i];
@@ -286,11 +305,11 @@ class Lista {
         return new Personagem();
     }
 
-    public int getTamanho(){
+    public int getTamanho() {
         return this.tamanho;
     }
 
-    public String getIdLista(int pos){
+    public String getIdLista(int pos) {
         return this.personagens[pos].getId();
     }
 }
@@ -312,7 +331,7 @@ class Personagem implements Comparable<Personagem> {
     private Boolean alive; // 10
     private ListaAlternate alternate_actors; // 11
     private LocalDate dateOfBirth; // 12
-    private int yearOfBirth; // 13 
+    private int yearOfBirth; // 13
     private String eyeColour; // 14
     private String gender; // 15
     private String hairColour; // 16
@@ -348,7 +367,7 @@ class Personagem implements Comparable<Personagem> {
     }
 
     // ------------------------ Clone ----------------------------
-    public Object Clone(){
+    public Object Clone() {
         Personagem personagem = new Personagem();
         Object personagemClone = new Object();
         try {
@@ -361,8 +380,8 @@ class Personagem implements Comparable<Personagem> {
 
     @Override
     public int compareTo(Personagem o) {
-        int _aux = (yearOfBirth%15);
-        int _aux2 = (o.yearOfBirth%15);
+        int _aux = (yearOfBirth % 15);
+        int _aux2 = (o.yearOfBirth % 15);
         return (_aux > _aux2 ? 1 : (_aux < _aux2 ? -1 : 0));
     }
 
@@ -590,43 +609,47 @@ class Personagem implements Comparable<Personagem> {
 
     // ------------------ imprimir dados -----------------------
     // public void print(BinaryTree personagens, String id, int index) {
-    //     Personagem personagem;
-    //     personagem = personagens.getCharacterById(id);
+    // Personagem personagem;
+    // personagem = personagens.getCharacterById(id);
 
-    //     // ------------------- Alternate Names --------------------
-    //     System.out.print("[" + index + " ## " + personagem.getId() + " ## " + personagem.getName() + " ## " + "{");
-    //     if (personagem.getAlternate_names().length() > 0) {
-    //         for (int i = 0; i < personagem.getAlternate_names().length() - 1; i++) {
-    //             System.out.print(personagem.getAlternate_names().getElement(i) + ", ");
-    //         }
-    //         System.out.print(personagem.getAlternate_names().getElement(personagem.getAlternate_names().length() - 1));
-    //     }
-    //     System.out.print("}");
+    // // ------------------- Alternate Names --------------------
+    // System.out.print("[" + index + " ## " + personagem.getId() + " ## " +
+    // personagem.getName() + " ## " + "{");
+    // if (personagem.getAlternate_names().length() > 0) {
+    // for (int i = 0; i < personagem.getAlternate_names().length() - 1; i++) {
+    // System.out.print(personagem.getAlternate_names().getElement(i) + ", ");
+    // }
+    // System.out.print(personagem.getAlternate_names().getElement(personagem.getAlternate_names().length()
+    // - 1));
+    // }
+    // System.out.print("}");
 
-    //     System.out.print(" ## " + personagem.getHouse() + " ## " + personagem.getAncestry() + " ## "
-    //             + personagem.getSpecies() + " ## "
-    //             + personagem.getPatronus() + " ## " + personagem.getHogwartsStaff() + " ## "
-    //             + personagem.getHogwartsStudent() + " ## "
-    //             + personagem.getActorName());
+    // System.out.print(" ## " + personagem.getHouse() + " ## " +
+    // personagem.getAncestry() + " ## "
+    // + personagem.getSpecies() + " ## "
+    // + personagem.getPatronus() + " ## " + personagem.getHogwartsStaff() + " ## "
+    // + personagem.getHogwartsStudent() + " ## "
+    // + personagem.getActorName());
 
-    //     // ---------- Formatar a data -----------
-    //     String date = "";
-    //     if (personagem.getDateOfBirth() != null) {
-    //         date = personagem.getDateOfBirth().toString();
-    //         String[] dateCut = TP04Q02.cutter('-', date);
-    //         date = dateCut[2];
-    //         date += "-";
-    //         date += dateCut[1];
-    //         date += "-";
-    //         date += dateCut[0];
-    //     }
+    // // ---------- Formatar a data -----------
+    // String date = "";
+    // if (personagem.getDateOfBirth() != null) {
+    // date = personagem.getDateOfBirth().toString();
+    // String[] dateCut = TP04Q02.cutter('-', date);
+    // date = dateCut[2];
+    // date += "-";
+    // date += dateCut[1];
+    // date += "-";
+    // date += dateCut[0];
+    // }
 
-    //     System.out.print(" ## " + personagem.getAlive() + " ## "
-    //             + date
-    //             + " ## " + personagem.getYearOfBirth() + " ## " + personagem.getEyeColour() + " ## "
-    //             + personagem.getGender() + " ## "
-    //             + personagem.getHairColour() + " ## " + personagem.getWizard());
-    //     System.out.println("]");
+    // System.out.print(" ## " + personagem.getAlive() + " ## "
+    // + date
+    // + " ## " + personagem.getYearOfBirth() + " ## " + personagem.getEyeColour() +
+    // " ## "
+    // + personagem.getGender() + " ## "
+    // + personagem.getHairColour() + " ## " + personagem.getWizard());
+    // System.out.println("]");
     // }
 } // end Personagem
 
@@ -675,7 +698,7 @@ class ListaAlternate {
 /**
  * TP02Q01
  */
-public class TP04Q02{
+public class TP04Q02 {
 
     // -------- Numero de intervalos na String ----------
     public static int numOfSpaces(String str, char regex) {
@@ -728,7 +751,8 @@ public class TP04Q02{
         String charset = "UTF-8";
 
         // -------------------- Ler o Arquivo .csv ---------------
-        try (BufferedReader buffer = new BufferedReader(new FileReader("characters.csv", Charset.forName(charset)))) {
+        try (BufferedReader buffer = new BufferedReader(
+                new FileReader("/tmp/characters.csv", Charset.forName(charset)))) {
 
             String characterLine = buffer.readLine();
             while ((characterLine = buffer.readLine()) != null) {
@@ -751,9 +775,25 @@ public class TP04Q02{
         Scanner scanner = new Scanner(System.in);
         String line = "";
         BinaryTree chararcter = new BinaryTree();
+        // 7, 3, 11, 1, 5, 9, 13, 0, 2, 4, 6, 8, 10, 12 e 14
+        chararcter.base_insert(7);
+        chararcter.base_insert(3);
+        chararcter.base_insert(11);
+        chararcter.base_insert(1);
+        chararcter.base_insert(5);
+        chararcter.base_insert(9);
+        chararcter.base_insert(13);
+        chararcter.base_insert(0);
+        chararcter.base_insert(2);
+        chararcter.base_insert(4);
+        chararcter.base_insert(6);
+        chararcter.base_insert(8);
+        chararcter.base_insert(10);
+        chararcter.base_insert(12);
+        chararcter.base_insert(14);
         while (!line.equalsIgnoreCase("FIM") && scanner.hasNext()) {
             line = scanner.nextLine();
-            if(!line.equalsIgnoreCase("FIM")){
+            if (!line.equalsIgnoreCase("FIM")) {
                 chararcter.insert(personagens.getCharacterByID(line));
             }
         }
@@ -764,20 +804,19 @@ public class TP04Q02{
             line = scanner.nextLine();
             if (!line.equalsIgnoreCase("FIM")) {
                 System.out.print(line + " => raiz ");
-                Personagem _aux = new Personagem();
-                _aux = personagens.getCharacterByName(line);
-                boolean resp = chararcter.search(_aux);
+                Personagem personagem = personagens.getCharacterByName(line);
+                boolean resp = chararcter.search(personagem);
                 if (resp) {
-                    System.out.println("SIM");
-                }else{
-                    System.out.println("NAO");
+                    System.out.println(" SIM");
+                } else {
+                    System.out.println(" NAO");
                 }
             }
         }
 
         long endTime = System.currentTimeMillis();
         long execTime = endTime - startTime;
-        try (BufferedWriter BW = new BufferedWriter(new FileWriter("matricula_quicksort2_java.txt"))) {
+        try (BufferedWriter BW = new BufferedWriter(new FileWriter("matricula_arvoreArvore.txt"))) {
             BW.write("815373" + "\t" + chararcter.countComp + "\t" + execTime + "ms");
         } catch (Exception e) {
             e.getStackTrace();
